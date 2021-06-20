@@ -2,6 +2,8 @@
 
 Basic implementation of Peg Solitaire game.
 
+`Demo:` https://saketkumar.com/games/peg-solitaire/
+
 # Board types
 
 -   Standard
