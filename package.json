@@ -1,7 +1,7 @@
 {
-    "name": "pixi-typescript-boilerplate",
+    "name": "pco-peg-soliraire",
     "version": "1.0.0",
-    "description": "pixi.js typescript boilerplate webpack",
+    "description": "Proof of Concept for Peg Solitaire game",
     "browserslist": "> 0.25%, not dead",
     "scripts": {
         "webpack": "webpack",
@@ -17,7 +17,7 @@
         "code-style-check": "npm run lint-check && npm run prettier:check",
         "prepare": "husky install"
     },
-    "author": "jkanchelov",
+    "author": "Saket Kumar",
     "license": "MIT",
     "dependencies": {
         "core-js": "^3.12.1",

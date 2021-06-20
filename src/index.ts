@@ -1,20 +1,20 @@
+import { ViewMetrics } from "./constants/ViewMetrics";
+import { Playground } from "./playground/Playground";
 import * as PIXI from "pixi.js";
 import "./style.css";
 
 declare const VERSION: string;
 
-const gameWidth = 800;
-const gameHeight = 600;
-
 console.log(`Welcome from pixi-typescript-boilerplate ${VERSION}`);
 
 const app = new PIXI.Application({
-    backgroundColor: 0xd3d3d3,
-    width: gameWidth,
-    height: gameHeight,
+    backgroundColor: 0xffffff,
+    width: ViewMetrics.landscapeWidth,
+    height: ViewMetrics.landscapeHeight,
 });
 
 const stage = app.stage;
+ViewMetrics.stage = stage;
 
 window.onload = async (): Promise<void> => {
     await loadGameAssets();
@@ -23,17 +23,15 @@ window.onload = async (): Promise<void> => {
 
     resizeCanvas();
 
-    const birdFromSprite = getBird();
-    birdFromSprite.anchor.set(0.5, 0.5);
-    birdFromSprite.position.set(gameWidth / 2, gameHeight / 2);
-
-    stage.addChild(birdFromSprite);
+    // Entry Point
+    const playground: Playground = new Playground();
+    stage.addChild(playground);
 };
 
 async function loadGameAssets(): Promise<void> {
     return new Promise((res, rej) => {
         const loader = PIXI.Loader.shared;
-        loader.add("rabbit", "./assets/simpleSpriteSheet.json");
+        loader.add("rabbit", "./assets/spritesheet.json");
 
         loader.onComplete.once(() => {
             res();
@@ -50,26 +48,16 @@ async function loadGameAssets(): Promise<void> {
 function resizeCanvas(): void {
     const resize = () => {
         app.renderer.resize(window.innerWidth, window.innerHeight);
-        app.stage.scale.x = window.innerWidth / gameWidth;
-        app.stage.scale.y = window.innerHeight / gameHeight;
+        const newScale = Math.min(
+            window.innerWidth / ViewMetrics.landscapeWidth,
+            window.innerHeight / ViewMetrics.landscapeHeight
+        );
+        ViewMetrics.scale = newScale;
+        app.stage.scale.x = newScale;
+        app.stage.scale.y = newScale;
+        app.stage.x = Math.max(0, (window.innerWidth - ViewMetrics.landscapeWidth * newScale) / 2);
+        app.stage.y = 0;
     };
-
     resize();
-
     window.addEventListener("resize", resize);
-}
-
-function getBird(): PIXI.AnimatedSprite {
-    const bird = new PIXI.AnimatedSprite([
-        PIXI.Texture.from("birdUp.png"),
-        PIXI.Texture.from("birdMiddle.png"),
-        PIXI.Texture.from("birdDown.png"),
-    ]);
-
-    bird.loop = true;
-    bird.animationSpeed = 0.1;
-    bird.play();
-    bird.scale.set(3);
-
-    return bird;
 }
