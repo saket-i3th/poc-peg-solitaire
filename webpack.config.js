@@ -37,7 +37,9 @@ module.exports = (env) => {
         },
 
         plugins: [
-            new HtmlWebpackPlugin(),
+            new HtmlWebpackPlugin({
+                title: "Peg Solitaire",
+            }),
             new CopyPlugin({
                 patterns: [
                     {

@@ -1,4 +1,3 @@
-import { Text } from "@pixi/text";
 import { ViewMetrics } from "./../constants/ViewMetrics";
 import { Button } from "./../ui/Button";
 import { Board } from "./Board";
@@ -8,7 +7,6 @@ export class Playground extends Container {
     private _board: Board;
     private _btnPrev: Button;
     private _btnNext: Button;
-    private _title: Text;
     constructor() {
         super();
 
@@ -22,6 +20,10 @@ export class Playground extends Container {
             this._board.previousLevel();
             this.updateButtons();
         });
+        this._btnPrev.on("tap", () => {
+            this._board.previousLevel();
+            this.updateButtons();
+        });
         this._btnNext = new Button("next.png");
         this._btnNext.x = ViewMetrics.landscapeWidth - 100;
         this._btnNext.y = ViewMetrics.landscapeHeight - 100;
@@ -30,16 +32,14 @@ export class Playground extends Container {
             this._board.nextLevel();
             this.updateButtons();
         });
-        this._title = new Text("");
-        this._title.x = 0;
-        this._title.y = 50;
-        this._title.anchor.set(0, 0.5);
-        this.addChild(this._title);
+        this._btnNext.on("tap", () => {
+            this._board.nextLevel();
+            this.updateButtons();
+        });
         this.updateButtons();
     }
 
     private updateButtons(): void {
-        this._title.text = this._board.boardType;
         this._btnPrev.enabled = !this._board.isFirstLevel;
         this._btnNext.enabled = !this._board.isLastLevel;
     }

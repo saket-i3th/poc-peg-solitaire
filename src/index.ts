@@ -47,16 +47,16 @@ async function loadGameAssets(): Promise<void> {
 
 function resizeCanvas(): void {
     const resize = () => {
-        app.renderer.resize(window.innerWidth, window.innerHeight);
+        app.renderer.resize(window.visualViewport.width, window.visualViewport.height);
         const newScale = Math.min(
-            window.innerWidth / ViewMetrics.landscapeWidth,
-            window.innerHeight / ViewMetrics.landscapeHeight
+            window.visualViewport.width / ViewMetrics.landscapeWidth,
+            window.visualViewport.height / ViewMetrics.landscapeHeight
         );
         ViewMetrics.scale = newScale;
         app.stage.scale.x = newScale;
         app.stage.scale.y = newScale;
         app.stage.x = Math.max(0, (window.innerWidth - ViewMetrics.landscapeWidth * newScale) / 2);
-        app.stage.y = 0;
+        app.stage.y = Math.max(0, (window.innerHeight - ViewMetrics.landscapeHeight * newScale) / 2);
     };
     resize();
     window.addEventListener("resize", resize);
